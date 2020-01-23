@@ -15,6 +15,7 @@ class PreauthorizeTransactionsController < ApplicationController
       tx_params = add_defaults(
         params: params_entity,
         shipping_enabled: listing.require_shipping_address,
+        installation_enabled: listing.installation_enabled,
         pickup_enabled: listing.pickup_enabled)
       tx_params[:marketplace_id] = @current_community.id
 
@@ -114,14 +115,16 @@ class PreauthorizeTransactionsController < ApplicationController
 
   private
 
-  def add_defaults(params:, shipping_enabled:, pickup_enabled:)
+  def add_defaults(params:, shipping_enabled:, pickup_enabled:, installation_enabled:)
     default_shipping =
-      case [shipping_enabled, pickup_enabled]
-      when [true, false]
+      case [shipping_enabled, pickup_enabled, installation_enabled]
+      when [true, false, false]
         {delivery: :shipping}
-      when [false, true]
+      when [false, true, false]
         {delivery: :pickup}
-      when [false, false]
+      when [false, false, true]
+        {delivery: :installation}
+      when [false, false, false]
         {delivery: nil}
       else
         {}

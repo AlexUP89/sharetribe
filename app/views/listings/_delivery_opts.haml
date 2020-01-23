@@ -18,6 +18,8 @@
             = t("listings.show.#{delivery_opts.first[:name]}_no_price")
             - if (delivery_opts.first[:name] == :shipping)
               = price_tag = "(+<span class=\"delivery-price-value\" data-shipping-price=\"#{delivery_opts.first[:price].cents}\" data-per-additional=\"#{Maybe(delivery_opts).first[:shipping_price_additional].cents.or_else(0)}\">#{MoneyViewUtils.to_humanized(delivery_opts.first[:price])}</span>)".html_safe
+            - if (delivery_opts.first[:name] == :installation)
+              = price_tag = "(+<span class=\"delivery-price-value\" data-shipping-price=\"#{delivery_opts.first[:price].cents}\">#{MoneyViewUtils.to_humanized(delivery_opts.first[:price])}</span>)".html_safe
     - else
       - delivery_opts.each do |opts|
         .row

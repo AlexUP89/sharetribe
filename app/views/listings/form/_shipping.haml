@@ -36,13 +36,15 @@
       - if @listing_presenter.shape[:installation_enabled]
         .js-installation-price-container
           .delivery-row-tall
-            .delivery-left-field.installation-price-container.installation-price-default
+            .delivery-left-field.shipping-price-container.installation-price-default
               .delivery-row
                 .delivery-label-cont
                   = form.label :installation_price, t("listings.form.price.installation_price"), class: "shipping-options-label"
-                .delivery-input-cont
+                .delivery-input-cont{ :style => "width: 11.6em;" }
                   .delivery-currency
                     = render partial: "listings/form/price_currency", locals: {form: form}
+                  = check_box_tag "installation_free", "true", false, id: "installation-free-checkbox", style: "margin-top: 15px"
+                  = label_tag "installation-free-checkbox", "Free", class: "shipping-options-label"
                   = form.text_field :installation_price, class: "price-field delivery-price-field", maxlength: 10, placeholder: 0, value: @listing_presenter.installation_price
       .delivery-row-low
         .delivery-checkbox

@@ -396,6 +396,9 @@ window.ST = window.ST || {};
     var $installation_checkbox = $('#installation-checkbox');
     $shipping_checkbox.add($installation_checkbox).click(function() { togglePrice(); });
 
+    var $installation_free_checkbox = $('#installation-free-checkbox');
+    $installation_free_checkbox.click(function() { toggleFreeInstallation(); });
+
     var togglePrice = function(){
       if($shipping_checkbox.is(":checked")) {
         $shipping_price_container.show();
@@ -409,6 +412,15 @@ window.ST = window.ST || {};
       }
     };
     togglePrice(); //initialize
+
+    var toggleFreeInstallation = function(){
+      if(!$installation_free_checkbox.is(":checked")) {
+        $('#listing_installation_price').removeAttr('readonly');
+      } else {
+        $('#listing_installation_price').val(0).attr('readonly', 'true');
+      }
+    };
+    toggleFreeInstallation();
 
     var $unit = $(".js-listing-unit");
 

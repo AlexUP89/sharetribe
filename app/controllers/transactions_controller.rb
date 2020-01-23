@@ -432,6 +432,7 @@ class TransactionsController < ApplicationController
           subtotal: quantity != 1 ? l_model.price * quantity : nil,
           total: l_model.price * quantity,
           shipping_price: nil,
+          installation_price: nil,
           total_label: total_label,
           unit_type: l_model.unit_type
         })
