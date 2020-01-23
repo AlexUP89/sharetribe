@@ -56,6 +56,12 @@
       = check_box_tag(:shipping_enabled, "true", shape[:shipping_enabled], class: "checkbox-row-checkbox js-shipping-enabled")
       = label_tag(:shipping_enabled, t("admin.listing_shapes.shipping_label"), class: "checkbox-row-label js-shipping-enabled-label")
 
+- unless uneditable_fields[:installation_enabled]
+  .row
+    .col-12
+      = check_box_tag(:installation_enabled, "true", shape[:installation_enabled], class: "checkbox-row-checkbox js-installation-enabled")
+      = label_tag(:installation_enabled, t("admin.listing_shapes.installation_label"), class: "checkbox-row-label js-installation-enabled-label")
+
 - unless uneditable_fields[:availability]
 
   .row

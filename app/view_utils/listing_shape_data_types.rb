@@ -35,6 +35,7 @@ module ListingShapeDataTypes
     [:name, :hash, :optional, validate_with: FORM_TRANSLATION],
     [:action_button_label, :hash, :optional, validate_with: FORM_TRANSLATION],
     [:shipping_enabled, transform_with: CHECKBOX],
+    [:installation_enabled, transform_with: CHECKBOX],
     [:price_enabled, transform_with: CHECKBOX],
     [:online_payments, transform_with: CHECKBOX],
     [:units, default: [], collection: Unit],

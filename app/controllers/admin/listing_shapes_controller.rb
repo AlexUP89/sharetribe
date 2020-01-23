@@ -185,6 +185,7 @@ class Admin::ListingShapesController < Admin::AdminBaseController
   def uneditable_fields(process_summary, author_is_seller)
     {
       shipping_enabled: !process_summary[:preauthorize_available] || !author_is_seller,
+      installation_enabled: !process_summary[:preauthorize_available] || !author_is_seller,
       online_payments: !process_summary[:preauthorize_available] || !author_is_seller,
       availability: !process_summary[:preauthorize_available] || !author_is_seller
     }
@@ -296,6 +297,10 @@ class Admin::ListingShapesController < Admin::AdminBaseController
 
     if form[:shipping_enabled] && !form[:online_payments]
       errors << "Shipping cannot be enabled without online payments"
+    end
+
+    if form[:installation_enabled] && !form[:online_payments]
+      errors << "Installation cannot be enabled without online payments"
     end
 
     if form[:online_payments] && !form[:price_enabled]

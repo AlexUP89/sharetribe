@@ -391,14 +391,21 @@ window.ST = window.ST || {};
     $('input.title_text_field:first').focus();
 
     var $shipping_price_container = $('.js-shipping-price-container');
+    var $installation_price_container = $('.js-installation-price-container');
     var $shipping_checkbox = $('#shipping-checkbox');
-    $shipping_checkbox.click(function() { togglePrice(); });
+    var $installation_checkbox = $('#installation-checkbox');
+    $shipping_checkbox.add($installation_checkbox).click(function() { togglePrice(); });
 
     var togglePrice = function(){
       if($shipping_checkbox.is(":checked")) {
         $shipping_price_container.show();
       } else {
         $shipping_price_container.hide();
+      }
+      if($installation_checkbox.is(":checked")) {
+        $installation_price_container.show();
+      } else {
+        $installation_price_container.hide();
       }
     };
     togglePrice(); //initialize

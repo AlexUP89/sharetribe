@@ -81,6 +81,8 @@ module ListingViewUtils
       I18n.translate("listings.show.shipping", price: MoneyViewUtils.to_humanized(shipping_price))
     elsif shipping_type == :pickup
       I18n.translate("listings.show.pickup", price: MoneyViewUtils.to_humanized(shipping_price))
+    elsif shipping_type == :installation
+      "Installation (+#{MoneyViewUtils.to_humanized(shipping_price)})"
     else
       raise ArgumentError.new("Delivery type not supported")
     end

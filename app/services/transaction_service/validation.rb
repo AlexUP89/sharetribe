@@ -33,7 +33,7 @@ module TransactionService
     }
 
     NewTransactionParams = EntityUtils.define_builder(
-      [:delivery, :to_symbol, one_of: [nil, :shipping, :pickup]],
+      [:delivery, :to_symbol, one_of: [nil, :shipping, :pickup, :installation]],
       [:start_on, :date, transform_with: PARSE_DATE],
       [:end_on, :date, transform_with: PARSE_DATE],
       [:message, :string],
@@ -42,7 +42,7 @@ module TransactionService
     )
 
     NewPerHourTransactionParams = EntityUtils.define_builder(
-      [:delivery, :to_symbol, one_of: [nil, :shipping, :pickup]],
+      [:delivery, :to_symbol, one_of: [nil, :shipping, :pickup, :installation]],
       [:start_time, :time, transform_with: PARSE_DATETIME],
       [:end_time, :time, transform_with: PARSE_DATETIME],
       [:per_hour, transform_with: ->(v) { v == "1" }],
@@ -59,11 +59,12 @@ module TransactionService
                                    tx_params:,
                                    quantity_selector:,
                                    shipping_enabled:,
+                                   installation_enabled:,
                                    pickup_enabled:,
                                    availability_enabled:,
                                    stripe_in_use:)
 
-        validate_delivery_method(tx_params: tx_params, shipping_enabled: shipping_enabled, pickup_enabled: pickup_enabled)
+        validate_delivery_method(tx_params: tx_params, shipping_enabled: shipping_enabled, installation_enabled: installation_enabled, pickup_enabled: pickup_enabled)
           .and_then { validate_booking(tx_params: tx_params, quantity_selector: quantity_selector, stripe_in_use: stripe_in_use) }
           .and_then { |result|
             if tx_params[:per_hour]
@@ -84,12 +85,13 @@ module TransactionService
                                     listing:,
                                     quantity_selector:,
                                     shipping_enabled:,
+                                    installation_enabled:,
                                     pickup_enabled:,
                                     availability_enabled:,
                                     transaction_agreement_in_use:,
                                     stripe_in_use:)
 
-        validate_delivery_method(tx_params: tx_params, shipping_enabled: shipping_enabled, pickup_enabled: pickup_enabled)
+        validate_delivery_method(tx_params: tx_params, shipping_enabled: shipping_enabled, installation_enabled: installation_enabled, pickup_enabled: pickup_enabled)
           .and_then { validate_booking(tx_params: tx_params, quantity_selector: quantity_selector, stripe_in_use: stripe_in_use) }
           .and_then { |result|
             # Dublication of initiate validation becouse of bug when use click
@@ -113,14 +115,19 @@ module TransactionService
           }
       end
 
-      def validate_delivery_method(tx_params:, shipping_enabled:, pickup_enabled:)
+      def validate_delivery_method(tx_params:, shipping_enabled:, pickup_enabled:, installation_enabled:)
         delivery = tx_params[:delivery]
 
-        case [delivery, shipping_enabled, pickup_enabled]
+        puts '==========================================================================='
+        puts delivery
+        puts installation_enabled
+        case [delivery, shipping_enabled, pickup_enabled, installation_enabled]
         when matches([:shipping, true])
           Result::Success.new(tx_params.merge(delivery: :shipping))
         when matches([:pickup, __, true])
           Result::Success.new(tx_params.merge(delivery: :pickup))
+        when matches([:installation, __, __, true])
+          Result::Success.new(tx_params.merge(delivery: :installation))
         when matches([nil, false, false])
           Result::Success.new(tx_params.merge(delivery: :nil))
         else

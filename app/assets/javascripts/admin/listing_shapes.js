@@ -62,6 +62,7 @@ window.ST.initializeListingShapeForm = function(formId) {
     toggleOnlinePaymentEnabled(state.priceEnabled);
     toggleUnitsEnabled(state.priceEnabled && !state.availabilityEnabled);
     toggleShippingEnabled(state.onlinePaymentsEnabled);
+    toggleInstallationEnabled(state.onlinePaymentsEnabled);
     toggleAvailabilityEnabled(state.onlinePaymentsEnabled);
     toggleAvailabilityUnitsEnabled(state.availabilityEnabled);
   }
@@ -83,6 +84,7 @@ window.ST.initializeListingShapeForm = function(formId) {
     } else {
       toggleOnlinePaymentEnabled(false);
       toggleShippingEnabled(false);
+      toggleInstallationEnabled(false);
       toggleUnitsEnabled(false);
       toggleAvailabilityEnabled(false);
       toggleAvailabilityUnitsEnabled(false);
@@ -95,11 +97,13 @@ window.ST.initializeListingShapeForm = function(formId) {
     if(enabled) {
       toggleAvailabilityEnabled(true);
       toggleShippingEnabled(true);
+      toggleInstallationEnabled(true);
       toggleUnitsEnabled(true);
     } else {
       toggleAvailabilityEnabled(false);
       toggleAvailabilityUnitsEnabled(false);
       toggleShippingEnabled(false);
+      toggleInstallationEnabled(false);
       toggleUnitsEnabled(true);
     }
   };
@@ -124,6 +128,11 @@ window.ST.initializeListingShapeForm = function(formId) {
   var toggleShippingEnabled = function(enabled) {
     toggleCheckboxEnabled($(".js-shipping-enabled"), enabled);
     toggleLabelEnabled($(".js-shipping-enabled-label"), enabled);
+  };
+
+  var toggleInstallationEnabled = function(enabled) {
+    toggleCheckboxEnabled($(".js-installation-enabled"), enabled);
+    toggleLabelEnabled($(".js-installation-enabled-label"), enabled);
   };
 
   var toggleUnitsEnabled = function(enabled) {

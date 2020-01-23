@@ -20,6 +20,7 @@ module TransactionService
          localized_selector_label: translate_selector_label_from_listing,
          subtotal: subtotal_to_show,
          shipping_price: shipping_price_to_show,
+         installation_price: installation_price_to_show,
          total: order_total,
          unit_type: listing.unit_type,
          start_time: tx_params[:start_time],
@@ -68,6 +69,7 @@ module TransactionService
     def order_total
       total = item_total + shipping_total
       total += buyer_fee if buyer_fee
+      total += listing.installation_price if tx_params[:delivery] == :installation
       total
     end
 
@@ -103,6 +105,10 @@ module TransactionService
 
     def shipping_price_to_show
       shipping_total if tx_params[:delivery] == :shipping
+    end
+
+    def installation_price_to_show
+      listing.installation_price if tx_params[:delivery] == :installation
     end
 
     def paypal_in_use

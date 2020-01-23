@@ -48,6 +48,8 @@
 #  availability                    :string(32)       default("none")
 #  per_hour_ready                  :boolean          default(FALSE)
 #  state                           :string(255)      default("approved")
+#  installation_enabled            :boolean          default(FALSE)
+#  installation_price_cents        :integer
 #
 # Indexes
 #

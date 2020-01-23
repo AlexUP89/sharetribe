@@ -8,7 +8,8 @@ module ListingFormViewUtils
     filter_fields << :unit unless shape_units(shape).present?
     filter_fields << :shipping_price unless shape[:shipping_enabled]
     filter_fields << :shipping_price_additional unless shape[:shipping_enabled]
-    filter_fields << :delivery_methods unless shape[:shipping_enabled]
+    filter_fields << :installation_price unless shape[:installation_enabled]
+    filter_fields << :delivery_methods unless (shape[:shipping_enabled] || shape[:installation_enabled])
     filter_fields << ["valid_until(1i)", "valid_until(2i)", "valid_until(3i)"] unless valid_until_enabled
 
     params.except(*filter_fields.flatten)
@@ -31,8 +32,8 @@ module ListingFormViewUtils
 
     errors << :price_required if shape[:price_enabled] && params[:price].nil?
     errors << :currency_required if shape[:price_enabled] && params[:currency].blank?
-    errors << :delivery_method_required if shape[:shipping_enabled] && params[:delivery_methods].empty?
-    errors << :unknown_delivery_method if shape[:shipping_enabled] && params[:delivery_methods].any? { |method| !["shipping", "pickup"].include?(method) }
+    errors << :delivery_method_required if (shape[:shipping_enabled] || shape[:installation_enabled]) && params[:delivery_methods].empty?
+    errors << :unknown_delivery_method if (shape[:shipping_enabled] || shape[:installation_enabled]) && params[:delivery_methods].any? { |method| !["shipping", "pickup", "installation"].include?(method) }
 
     errors << :unit_required if shape_units(shape).present? && unit.blank?
     errors << :unit_does_not_belong if shape_units(shape).present? && unit.present? && !shape_units(shape).any? { |u| u.slice(*unit.keys) == unit }
@@ -111,6 +112,7 @@ module ListingFormViewUtils
   def create_listing_params(params)
     listing_params = params.except(:delivery_methods).merge(
       require_shipping_address: Maybe(params[:delivery_methods]).map { |d| d.include?("shipping") }.or_else(false),
+      installation_enabled: Maybe(params[:delivery_methods]).map { |d| d.include?("installation") }.or_else(false),
       pickup_enabled: Maybe(params[:delivery_methods]).map { |d| d.include?("pickup") }.or_else(false),
       price_cents: params[:price_cents],
       shipping_price_cents: params[:shipping_price_cents],

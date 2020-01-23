@@ -68,6 +68,13 @@
       %span.initiate-transaction-shipping-price-value
         = MoneyViewUtils.to_humanized(shipping_price)
 
+  - if installation_price.present?
+    .initiate-transaction-shipping-price-wrapper
+      %span.initiate-transaction-shipping-price-label
+        = "Installation:"
+      %span.initiate-transaction-shipping-price-value
+        = MoneyViewUtils.to_humanized(installation_price)
+
   - if is_author
     - unless has_buyer_fee
       .initiate-transaction-sum-wrapper#tx-total-to-pay

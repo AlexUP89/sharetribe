@@ -7,6 +7,8 @@
 #  transaction_process_id :integer          not null
 #  price_enabled          :boolean          not null
 #  shipping_enabled       :boolean          not null
+#  installation_enabled   :boolean          default(FALSE)
+#  availability           :string(32)       default("none")
 #  name                   :string(255)      not null
 #  name_tr_key            :string(255)      not null
 #  action_button_tr_key   :string(255)      not null
@@ -14,7 +16,6 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  deleted                :boolean          default(FALSE)
-#  availability           :string(32)       default("none")
 #
 # Indexes
 #
@@ -41,7 +42,7 @@ class ListingShape < ApplicationRecord
   scope :by_process_none, -> { joins(:transaction_process).merge(TransactionProcess.process_none) }
 
   validates :name_tr_key, :action_button_tr_key, :transaction_process_id, presence: true
-  validates :price_enabled, :shipping_enabled, inclusion: [true, false]
+  validates :price_enabled, :shipping_enabled, :installation_enabled, inclusion: [true, false]
   validates :availability, inclusion: AVAILABILITIES # Possibly :stock in the future
 
   def units
@@ -78,7 +79,7 @@ class ListingShape < ApplicationRecord
   end
 
   def self.permitted_attributes(opts)
-    HashUtils.compact(opts.slice(:transaction_process_id, :price_enabled, :shipping_enabled, :name_tr_key, :action_button_tr_key, :sort_priority, :deleted, :availability))
+    HashUtils.compact(opts.slice(:transaction_process_id, :price_enabled, :shipping_enabled, :installation_enabled, :name_tr_key, :action_button_tr_key, :sort_priority, :deleted, :availability))
   end
 
   def self.next_sort_priority(shapes)

@@ -988,6 +988,7 @@ en:
       pricing_and_checkout_title: "Pricing & checkout"
       online_payments_label: "Allow sellers to accept payments online"
       shipping_label: "Allow sellers to define a shipping fee"
+      installation_label: "Allow sellers to define a installation fee"
       price_label: "Allow sellers to add a price to their listings"
       units_title: "Pricing units"
       units_desc: "If you have enabled pricing units, the listing price is displayed as \"price per pricing unit\". An example: \"$39 per hour\"."
@@ -2187,6 +2188,8 @@ en:
         payment_fee_info_link_text: "%{service_name} fee and a payment processing fee"
         delivery: "Delivery method"
         shipping: Shipping
+        installation: Installation
+        installation_price: "Installation Fee"
         shipping_price: "Shipping fee"
         shipping_price_additional: "Additional items"
         pickup: Pickup
@@ -2340,6 +2343,7 @@ en:
       shipping: "Shipping (+%{price})"
       shipping_no_price: Shipping
       shipping_price_additional: "Shipping (+%{price}, additional items: +%{shipping_price_additional})"
+      installation_no_price: Installation
       pickup: Pickup
       pickup_no_price: Pickup
       youtube_video_player: "YouTube video player"

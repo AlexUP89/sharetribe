@@ -760,6 +760,7 @@ CREATE TABLE `listing_shapes` (
   `transaction_process_id` int(11) NOT NULL,
   `price_enabled` tinyint(1) NOT NULL,
   `shipping_enabled` tinyint(1) NOT NULL,
+  `installation_enabled` tinyint(1) DEFAULT '0',
   `availability` varchar(32) DEFAULT 'none',
   `name` varchar(255) NOT NULL,
   `name_tr_key` varchar(255) NOT NULL,
@@ -856,6 +857,8 @@ CREATE TABLE `listings` (
   `availability` varchar(32) DEFAULT 'none',
   `per_hour_ready` tinyint(1) DEFAULT '0',
   `state` varchar(255) DEFAULT 'approved',
+  `installation_enabled` tinyint(1) DEFAULT '0',
+  `installation_price_cents` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_listings_on_uuid` (`uuid`),
   KEY `index_listings_on_new_category_id` (`category_id`) USING BTREE,
@@ -2413,10 +2416,12 @@ INSERT INTO `schema_migrations` (version) VALUES
 ('20190305112030'),
 ('20190319114719'),
 ('20190319122745'),
+('20190627055931'),
+('20190705083608'),
+('20190705100256'),
 ('20190717105844'),
 ('20190718081745'),
 ('20190904115045'),
-('20190627055931'),
-('20190705083608'),
-('20190705100256');
+('20200123142715');
+
 

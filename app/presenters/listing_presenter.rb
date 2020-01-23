@@ -85,7 +85,7 @@ class ListingPresenter < MemoisticPresenter
   end
 
   def delivery_opts
-    delivery_config(@listing.require_shipping_address, @listing.pickup_enabled, @listing.shipping_price, @listing.shipping_price_additional, @listing.currency)
+    delivery_config(@listing.require_shipping_address, @listing.pickup_enabled, @listing.installation_enabled, @listing.shipping_price, @listing.shipping_price_additional, @listing.installation_price, @listing.currency)
   end
 
   def listing_unit_type
@@ -100,11 +100,12 @@ class ListingPresenter < MemoisticPresenter
     MoneyViewUtils.currency_opts(I18n.locale, currency)
   end
 
-  def delivery_config(require_shipping_address, pickup_enabled, shipping_price, shipping_price_additional, currency)
+  def delivery_config(require_shipping_address, pickup_enabled, installation_enabled, shipping_price, shipping_price_additional, installation_price, currency)
     shipping = delivery_price_hash(:shipping, shipping_price, shipping_price_additional) if require_shipping_address
     pickup = delivery_price_hash(:pickup, Money.new(0, currency), Money.new(0, currency))
+    installation = delivery_price_hash(:installation, installation_price, Money.new(0, currency)) if installation_enabled
 
-    case [require_shipping_address, pickup_enabled]
+    base_config = case [require_shipping_address, pickup_enabled]
     when matches([true, true])
       [shipping, pickup]
     when matches([true, false])
@@ -114,6 +115,8 @@ class ListingPresenter < MemoisticPresenter
     else
       []
     end
+    base_config << installation if installation_enabled
+    base_config
   end
 
   def get_transaction_process(community_id:, transaction_process_id:)
@@ -258,8 +261,16 @@ class ListingPresenter < MemoisticPresenter
     @listing.shipping_price || "0"
   end
 
+  def installation_price
+    @listing.installation_price || "0"
+  end
+
   def shipping_enabled
     @listing.require_shipping_address?
+  end
+
+  def installation_enabled
+    @listing.installation_enabled?
   end
 
   def pickup_enabled

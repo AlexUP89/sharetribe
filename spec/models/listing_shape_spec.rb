@@ -7,6 +7,7 @@
 #  transaction_process_id :integer          not null
 #  price_enabled          :boolean          not null
 #  shipping_enabled       :boolean          not null
+#  installation_enabled   :boolean          default(FALSE)
 #  availability           :string(32)       default("none")
 #  name                   :string(255)      not null
 #  name_tr_key            :string(255)      not null

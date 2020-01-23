@@ -24,6 +24,7 @@ class PreauthorizeTransactionsController < ApplicationController
         tx_params: tx_params,
         quantity_selector: listing.quantity_selector&.to_sym,
         shipping_enabled: listing.require_shipping_address,
+        installation_enabled: listing.installation_enabled,
         pickup_enabled: listing.pickup_enabled,
         availability_enabled: listing.availability.to_sym == :booking,
         stripe_in_use: StripeHelper.user_and_community_ready_for_payments?(listing.author_id, @current_community.id))
@@ -50,6 +51,7 @@ class PreauthorizeTransactionsController < ApplicationController
         listing: listing,
         quantity_selector: listing.quantity_selector&.to_sym,
         shipping_enabled: listing.require_shipping_address,
+        installation_enabled: listing.installation_enabled,
         availability_enabled: listing.availability.to_sym == :booking,
         pickup_enabled: listing.pickup_enabled,
         transaction_agreement_in_use: @current_community.transaction_agreement_in_use?,
